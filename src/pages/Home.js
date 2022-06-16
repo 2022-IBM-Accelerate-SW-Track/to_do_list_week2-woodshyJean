@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState} from "react";
 import Todos from "../component/todos";
 import AddTodo from "../component/AddTodo";
 import "../pages/Home.css";
@@ -11,8 +11,19 @@ class Home extends Component {
       todos: [],
     };
   }
+
   // the addTodo function simply creates a new array that includes the user submitted todo item and then
   // updates the state with the new list.
+
+  deleteTodo = (id) => {
+    const todos = this.state.todos.filter((todo) => {
+      return todo.id !== id;
+    });
+    this.setState({
+      todos: todos,
+    });
+  };
+  
   addTodo = (todo) => {
     // In React, keys or ids in a list help identify which items have changed, been added or removed. Keys
     // should not share duplicate values.
@@ -21,7 +32,34 @@ class Home extends Component {
     // dealing with a larger data sensitive project.
     todo.id = Math.random();
     // Create a array that contains the current array and the new todo item
+    //console.log(todo)
+    //console.log(this.state.todos)
+
+    //const state = this.state.todos.map( todos => {  //returns array of todo content
+    //  return todos
+    //})
+
+  
+    //const test = new Set(state); //removes duplicates from array of todo content
+  
+
     let new_list = [...this.state.todos, todo];
+
+    if(this.state.todos.find(element => element.content === todo.content)){
+      return
+    }
+
+    ////////////////// BEFORE i read that we needed to use .find() method
+    //const state = new_list.map( todos => {  //returns array of todo content
+    //  return todos.content
+    //})
+    //
+    //const remDuplicate = new Set(state); //removes duplicate todo content
+    //
+    //if (remDuplicate.size < state.length) return /*if there are duplicates (repeated todos) than the length of remDuplicate will be less than the length of state array.
+    //in that condition we return before we setState so that the duplicate todos arent rendered */
+
+
     // Update the local state with the new array.
     this.setState({
       todos: new_list,
@@ -36,7 +74,7 @@ class Home extends Component {
         <AddTodo addTodo={this.addTodo} />
         {/* When returning the Todos component, todos is a prop passed to the todos.js file
          to format and render the current todo list state */}
-        <Todos todos={this.state.todos} />
+        <Todos todos={this.state.todos} deleteTodo={this.deleteTodo} />
       </div>
     );
   }
