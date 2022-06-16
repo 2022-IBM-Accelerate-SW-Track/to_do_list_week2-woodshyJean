@@ -1,4 +1,4 @@
-import React, { Component, useState} from "react";
+import React, { Component} from "react";
 import Todos from "../component/todos";
 import AddTodo from "../component/AddTodo";
 import "../pages/Home.css";
